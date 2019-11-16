@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">图片分类打包工具</string>
+    <string name="create_tag">创建新标签</string>
+    <string name="open_camera">启动相机</string>
+    <string name="open_folder">读取图片</string>
+    <string name="input_tag_name">请输入标签名</string>
+    <string name="show_all_tag">所有标签</string>
+    <string name="last_add_image">上一个添加的图片</string>
+    <string name="edit_tag">修改标签</string>
+    <string name="delete_tag">删除标签</string>
+    <string name="share_tagFold">打包分享</string>
+
+</resources>
