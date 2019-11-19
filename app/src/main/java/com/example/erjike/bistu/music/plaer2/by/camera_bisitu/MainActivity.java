@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         text_camera = (TextView)findViewById(R.id.open_camera);
         image_folder = (ImageView)findViewById(R.id.open_folder_image);
         text_foler = (TextView)findViewById(R.id.open_folder);
+        imageView2 = (ImageView)findViewById(R.id.show_image);
         //RecyclerView赋值
         tag_reyclerView = (RecyclerView)findViewById(R.id.main_tag_recyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(MainActivity.this,2);//一行显示两个
