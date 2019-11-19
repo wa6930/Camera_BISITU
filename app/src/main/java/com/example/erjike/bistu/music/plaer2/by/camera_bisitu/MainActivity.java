@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +34,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -45,6 +48,7 @@ import android.os.Environment;
 
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.adapter.TagChangeAdapter;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.adapter.TapShowAdapter;
+import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.FileControl;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.TagChangedTools;
 
 import java.io.File;
@@ -70,18 +74,57 @@ public class MainActivity extends AppCompatActivity {
     ImageView image_folder;
     TextView text_foler;
 
-
     //显示标签的RecyclerView
     RecyclerView tag_reyclerView;
     TapShowAdapter adapter;
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_menu, menu);
+        //绑定导航菜单
+        return  true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.delete_all_tag:
+                android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
+                dialogBuilder.setTitle("是否删除该标签");
+
+                LayoutInflater layoutInflater=getLayoutInflater();
+                View dialogeView=layoutInflater.inflate(R.layout.dialoge_delete_tag_tips,null);
+                dialogBuilder.setView(dialogeView);
+                dialogBuilder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO 完成实现方法
+                        FileControl.deleteChildFiles(getExternalCacheDir().getPath());//删除所有文件夹
+                        TagChangedTools.deleteAllTag(MainActivity.this);//删除所有的tag
+                        stringList.clear();
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                        // 删除文件夹与内部所有文件，并且删除内部标签
+                    }
+                });
+                dialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //不进行任何操作
+                    }
+                });
+                dialogBuilder.show();
+                break;
+            default:
+        }
+        return  true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        imageView2 = (ImageView) findViewById(R.id.show_image);
         //对标题功能键赋值与绑定
         image_createTag = (ImageView)findViewById(R.id.create_tag_Image);
         text_createTag = (TextView)findViewById(R.id.create_tag);
@@ -134,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                         if(!editText.getText().toString().equals("")||editText!=null){
                             stringList.add(editText.getText().toString());
                             TagChangedTools.addTag(MainActivity.this,editText.getText().toString());
-                            Toast.makeText(MainActivity.this,"添加标签成功！",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,"添加标签成功！",Toast.LENGTH_SHORT).show();//与显示添加标签冲突
                             adapter.notifyDataSetChanged();
                         }
                     }
@@ -228,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 //照相机返回内容实现
                 dialogShowCamera(data);
                 break;
-            case PICK_PHOTO: {
+            case PICK_PHOTO:
                 if (Build.VERSION.SDK_INT >= 19) {
                     //android 4.4以上版本使用此方法处理图片
 
@@ -240,7 +283,9 @@ public class MainActivity extends AppCompatActivity {
                     dialogShowBeforeKitKat(data);
                     //同上
                 }
-            }
+
+                break;
+            default:
         }
     }
     private void handleImageBeforeKitKat(Intent data,ImageView imageView) {
@@ -265,7 +310,10 @@ public class MainActivity extends AppCompatActivity {
         dilog_recyclerview.setLayoutManager(layoutManager);
         dilog_recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        //TODO 绑定adapter
+        Bitmap bitmap = FileControl.ImageToBitmap(dialog_image);//将图片转换为bitmap形式
+        adapter.setBitmap(bitmap);//绑定adapter的bitmap
+        handleImageOnKitKat(data,dialog_image);//查图
+        //绑定adapter
         handleImageBeforeKitKat(data,dialog_image);//调用查图方法
         dialogBuilder.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
             @Override
@@ -291,7 +339,8 @@ public class MainActivity extends AppCompatActivity {
         dilog_recyclerview.setLayoutManager(layoutManager);
         dilog_recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        //TODO 绑定adapter
+//        Bitmap bitmap = FileControl.ImageToBitmap(dialog_image);//将图片转换为bitmap形式
+//        adapter.setBitmap(bitmap);//绑定adapter的bitmap
         handleImageOnKitKat(data,dialog_image);//查图
         dialogBuilder.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
             @Override
@@ -326,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
         dilog_recyclerview.setLayoutManager(layoutManager);
         dilog_recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        adapter.setBitmap(bitmap);//绑定adapter中的Bitmap
         //TODO 绑定adapter
 
         dialogBuilder.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
@@ -342,14 +392,17 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "handleImageBeforeKitKat: data:"+data);
         String imagePath = null;
         Uri uri = data.getData();
+        Log.i(TAG, "handleImageOnKitKat: getAuthority():"+uri.getAuthority());
         if (DocumentsContract.isDocumentUri(MainActivity.this, uri)) {
             String docId = DocumentsContract.getDocumentId(uri);
             if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
                 String id = docId.split(":")[1];
                 //解析出数字格式的id
+                Log.i(TAG, "handleImageOnKitKat: docId.split[1]"+docId);
                 String selection = MediaStore.Images.Media._ID + "=" + id;
                 imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+            }
+            else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
                 Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
                 imagePath = getImagePath(contentUri,null);
             } else if ("content".equalsIgnoreCase(uri.getScheme())){
@@ -379,7 +432,6 @@ public class MainActivity extends AppCompatActivity {
         if(cursor != null){
             if(cursor.moveToFirst()){
                 path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-
             }
             cursor.close();
         }

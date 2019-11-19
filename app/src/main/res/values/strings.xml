@@ -9,5 +9,11 @@
     <string name="edit_tag">修改标签</string>
     <string name="delete_tag">删除标签</string>
     <string name="share_tagFold">打包分享</string>
+    <string name="delete_tip">警告，删除标签会导致内部图片全部被删除</string>
+    <string name="rename_tag">请输入标签新名</string>
+    <string name="rename_tag_hint">在此处输入您想要更改成的标签名</string>
+    <string name="delete_all_tag">删除所有标签</string>
+
+
 
 </resources>

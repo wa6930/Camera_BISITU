@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,8 @@ import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.ShowAllImageInTag;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.TagChangedTools;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,12 +35,12 @@ public class TagChangeAdapter extends RecyclerView.Adapter<TagChangeAdapter.View
     private Context mContext;
     private List<String> tagList;
     private ImageView outImage;
+    //要保存的BitMap
+    Bitmap bitmap;
 
-
-    public void setTagList(List<String> tagList) {
-        this.tagList = tagList;
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
-
 
     public TagChangeAdapter(Context mContext, List<String> tagList, ImageView outImage) {
         this.mContext = mContext;
@@ -96,6 +99,15 @@ public class TagChangeAdapter extends RecyclerView.Adapter<TagChangeAdapter.View
                 @Override
                 public void onClick(View v) {
                     //TODO 点击后添加到对应的标签中
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
+                    String s=df.format(new Date());
+                    if(bitmap!=null){
+                        Toast.makeText(mContext,"图片以成功添加到标签内！",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(mContext,"bitmap为空！",Toast.LENGTH_SHORT).show();
+                    }
+                    //TODO 生成图片
+
                 }
             });
 

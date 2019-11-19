@@ -1,17 +1,18 @@
 package com.example.erjike.bistu.music.plaer2.by.camera_bisitu.Model;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 public class ImageModel {
-    Image image;
+    Bitmap image;
     String imageName;
 
-    public ImageModel(Image image, String imageName) {
+    public ImageModel(Bitmap image, String imageName) {
         this.image = image;
         this.imageName = imageName;
     }
 
-    public Image getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
@@ -19,7 +20,7 @@ public class ImageModel {
         return imageName;
     }
 
-    public void setImage(Image image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 
