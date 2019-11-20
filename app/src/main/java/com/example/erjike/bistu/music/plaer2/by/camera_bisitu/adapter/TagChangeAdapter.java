@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.MainActivity;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.R;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.ShowAllImageInTag;
+import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.FileControl;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.TagChangedTools;
 
 import java.io.File;
@@ -61,12 +63,21 @@ public class TagChangeAdapter extends RecyclerView.Adapter<TagChangeAdapter.View
         }
         final View view = LayoutInflater.from(mContext).inflate(R.layout.tag_item, parent, false);//导入卡片视图
         ViewHolder viewHolder = new ViewHolder(view);
-        TextView tagName = (TextView) view.findViewById(R.id.item_tagName);
+        final TextView tagName = (TextView) view.findViewById(R.id.item_tagName);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 书写点击了标签后应该将图片添加到对应的文件夹下。
-                Bitmap bitmap = ((BitmapDrawable)outImage.getDrawable()).getBitmap();//获得BitMap
+                //TODO 点击后添加到对应的标签中
+                SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");//2019_11_19-21_56_00
+                String s=df.format(new Date());//字符串
+                //Log.i("CreateView", "onClick: s="+s);
+                if(bitmap!=null){
+                    FileControl.createFile(mContext.getExternalCacheDir().getPath()+"/"+tagName.getText().toString(),s,bitmap);
+                    Toast.makeText(mContext,"图片已经成功添加到标签内！",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(mContext,"bitmap为空！",Toast.LENGTH_SHORT).show();
+                }
+                //TODO 生成图片
 
             }
         });
@@ -80,6 +91,7 @@ public class TagChangeAdapter extends RecyclerView.Adapter<TagChangeAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tagName.setText(tagList.get(position));
         holder.postion=position;
+
     }
 
     @Override
@@ -95,21 +107,7 @@ public class TagChangeAdapter extends RecyclerView.Adapter<TagChangeAdapter.View
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tagName = (TextView) itemView.findViewById(R.id.item_tagName);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO 点击后添加到对应的标签中
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
-                    String s=df.format(new Date());
-                    if(bitmap!=null){
-                        Toast.makeText(mContext,"图片以成功添加到标签内！",Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(mContext,"bitmap为空！",Toast.LENGTH_SHORT).show();
-                    }
-                    //TODO 生成图片
 
-                }
-            });
 
 
         }

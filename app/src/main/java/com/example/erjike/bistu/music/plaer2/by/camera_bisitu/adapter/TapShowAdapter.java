@@ -55,13 +55,6 @@ public class TapShowAdapter extends RecyclerView.Adapter<TapShowAdapter.ViewHold
         final View view = LayoutInflater.from(mContext).inflate(R.layout.main_tag_item, parent, false);//导入卡片视图
         ViewHolder viewHolder = new ViewHolder(view);
         TextView tagName = (TextView) view.findViewById(R.id.main_tag_tag_name);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO 读取对应文件夹，进入对应目录
-            }
-        });
-
 
 
         return viewHolder;

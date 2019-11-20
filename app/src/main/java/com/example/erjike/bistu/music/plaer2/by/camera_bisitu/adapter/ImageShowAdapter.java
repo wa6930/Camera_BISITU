@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,8 +62,9 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                PopupMenu menu = new PopupMenu(mContext,v);
+
                 return false;
-                //TODO 长按可以编辑文件（删除，转移到别的标签）
             }
         });
 
@@ -75,7 +77,6 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tagName.setText(ImageList.get(position).getImageName());
         holder.imageView.setImageBitmap(ImageList.get(position).getImage());
-        holder.postion=position;
     }
 
     @Override
@@ -86,22 +87,14 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tagName;
         ImageView imageView;
-        int postion;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            TextView tagName = (TextView) itemView.findViewById(R.id.tag_name_item);
-            ImageView imageView = (ImageView)itemView.findViewById(R.id.tag_image_showd_item);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO 点击后添加到对应的标签中
-                }
-            });
-
-
+            tagName = (TextView)itemView.findViewById(R.id.tag_name_item);
+            imageView = (ImageView)itemView.findViewById(R.id.tag_image_showd_item);
         }
+
+
         //TODO 自建holder类
     }
 }

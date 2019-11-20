@@ -311,11 +311,11 @@ public class MainActivity extends AppCompatActivity {
         dilog_recyclerview.setLayoutManager(layoutManager);
         dilog_recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        Bitmap bitmap = FileControl.ImageToBitmap(dialog_image);//将图片转换为bitmap形式
-        adapter.setBitmap(bitmap);//绑定adapter的bitmap
         handleImageOnKitKat(data,dialog_image);//查图
         //绑定adapter
         handleImageBeforeKitKat(data,dialog_image);//调用查图方法
+        Bitmap bitmap = FileControl.ImageToBitmap(dialog_image);//将图片转换为bitmap形式
+        adapter.setBitmap(bitmap);//绑定adapter的bitmap
         dialogBuilder.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -343,6 +343,8 @@ public class MainActivity extends AppCompatActivity {
 //        Bitmap bitmap = FileControl.ImageToBitmap(dialog_image);//将图片转换为bitmap形式
 //        adapter.setBitmap(bitmap);//绑定adapter的bitmap
         handleImageOnKitKat(data,dialog_image);//查图
+        Bitmap bitmap = FileControl.ImageToBitmap(dialog_image);//将图片转换为bitmap形式
+        adapter.setBitmap(bitmap);//绑定adapter的bitmap
         dialogBuilder.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
