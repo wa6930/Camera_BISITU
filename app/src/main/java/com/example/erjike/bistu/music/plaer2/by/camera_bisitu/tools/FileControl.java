@@ -75,6 +75,8 @@ public class FileControl {
     }
 
     /**
+     * 获取子目录的所有内容
+     *
      * @param file 地址
      */
     public static List<File> getFile(File file) {
@@ -96,6 +98,29 @@ public class FileControl {
     }
 
     /**
+     * 获取子目录的所有文件夹
+     *
+     * @param file 地址
+     */
+    public static List<File> getFolder(File file) {
+        List<File> list = new ArrayList<>();
+        File[] fileArray = file.listFiles();
+        if (fileArray == null) {
+            return null;
+        } else {
+            for (File f : fileArray) {
+
+                if (!f.isFile()) {
+                    list.add(f);//这里不检测是否是文件夹，因为文件夹也要计算
+                }
+            }
+        }
+        return list;
+
+    }
+
+
+    /**
      * 获得所有ImageModel形式的链表
      *
      * @param list getFile生成的文件链表
@@ -113,7 +138,8 @@ public class FileControl {
             String mapName = f.getName();
             Log.i(TAG, "getImage: Name:" + f.getName());
             Log.i(TAG, "getImage:Bitmap" + bitmap.toString());
-            bitList.add(new ImageModel(bitmap, mapName));
+            String mapPath = f.getPath();
+            bitList.add(new ImageModel(bitmap, mapName, mapPath));
             Log.i(TAG, "getImage: 成功读取bitmap:" + f.getName());
         }
         //TODO 实现List<File>转List<Bitmap>
@@ -138,6 +164,19 @@ public class FileControl {
 //                }
             }
         }
+        File pathFile = new File(filePath);
+        pathFile.delete();//删除自身
+        return true;
+
+    }
+
+    /**
+     * 删除图片
+     *
+     * @param filePath 图片地址
+     */
+    public static boolean deleteImage(String filePath) {
+
         File pathFile = new File(filePath);
         pathFile.delete();//删除自身
         return true;

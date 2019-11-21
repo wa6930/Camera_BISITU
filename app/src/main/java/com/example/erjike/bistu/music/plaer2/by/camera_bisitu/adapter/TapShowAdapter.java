@@ -5,13 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +18,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.MainActivity;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.R;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.ShowAllImageInTag;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.FileControl;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.TagChangedTools;
+import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.ZipFolderTools;
 
 import java.util.List;
+
+import static com.example.erjike.bistu.music.plaer2.by.camera_bisitu.ShowAllImageInTag.TAG;
+
 //用于显示主界面的tag
 public class TapShowAdapter extends RecyclerView.Adapter<TapShowAdapter.ViewHolder> {
 
@@ -105,7 +107,7 @@ public class TapShowAdapter extends RecyclerView.Adapter<TapShowAdapter.ViewHold
                                     dialogBuilder2.setTitle("更改标签内容");
 
                                     LayoutInflater layoutInflater2= ((Activity)mContext).getLayoutInflater();
-                                    View dialogeView2=layoutInflater2.inflate(R.layout.dialoge_rename,null);
+                                    View dialogeView2=layoutInflater2.inflate(R.layout.dialog_rename,null);
                                     dialogBuilder2.setView(dialogeView2);
                                     final EditText editText = (EditText) dialogeView2.findViewById(R.id.dialog_rename_tag);
                                     dialogBuilder2.setPositiveButton("更改", new DialogInterface.OnClickListener() {
@@ -134,7 +136,7 @@ public class TapShowAdapter extends RecyclerView.Adapter<TapShowAdapter.ViewHold
                                     dialogBuilder.setTitle("是否删除该标签");
 
                                     LayoutInflater layoutInflater= ((Activity)mContext).getLayoutInflater();
-                                    View dialogeView=layoutInflater.inflate(R.layout.dialoge_delete_tag_tips,null);
+                                    View dialogeView=layoutInflater.inflate(R.layout.dialog_delete_tag_tips,null);
                                     dialogBuilder.setView(dialogeView);
                                     dialogBuilder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
                                         @Override
@@ -158,6 +160,12 @@ public class TapShowAdapter extends RecyclerView.Adapter<TapShowAdapter.ViewHold
 
                                     //TODO 实现文件夹压缩
                                     //TODO 调用微信分享接口，或者qq分享接口，或者其他相应分享接口
+                                    try {
+                                        ZipFolderTools.ZipFolder(mContext.getExternalCacheDir()+"/"+tagName.getText().toString(),mContext.getExternalCacheDir()+"/out.zip");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Log.e(TAG, "onMenuItemClick: "+e.getMessage() );
+                                    }
                                     break;
                                 default:
                             }

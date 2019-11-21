@@ -12,21 +12,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,12 +34,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Environment;
 
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.adapter.TagChangeAdapter;
 import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.adapter.TapShowAdapter;
@@ -53,11 +46,8 @@ import com.example.erjike.bistu.music.plaer2.by.camera_bisitu.tools.TagChangedTo
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     ImageView imageView2;
@@ -94,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 dialogBuilder.setTitle("是否删除该标签");
 
                 LayoutInflater layoutInflater=getLayoutInflater();
-                View dialogeView=layoutInflater.inflate(R.layout.dialoge_delete_tag_tips,null);
+                View dialogeView=layoutInflater.inflate(R.layout.dialog_delete_tag_tips,null);
                 dialogBuilder.setView(dialogeView);
                 dialogBuilder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override
@@ -139,10 +129,6 @@ public class MainActivity extends AppCompatActivity {
         tag_reyclerView.setLayoutManager(layoutManager);
         stringList = new ArrayList<>();
         stringList.addAll(TagChangedTools.getTagList(MainActivity.this));//对链表付初始值
-        for(int i =0 ;i<stringList.size();i++){
-            Log.i(TAG, "onCreate: stringList["+i+"]:"+stringList.get(i));//标签添加成功
-        }
-        Log.i(TAG, "onCreate: stringList遍历完毕！");
 
         adapter = new TapShowAdapter(MainActivity.this,stringList);
         tag_reyclerView.setAdapter(adapter);//显示
@@ -168,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(MainActivity.this);
                 dialogBuilder.setTitle("创建新标签");
                 LayoutInflater layoutInflater=getLayoutInflater();
-                View dialogeView=layoutInflater.inflate(R.layout.dialoge_create_tag,null);
+                View dialogeView=layoutInflater.inflate(R.layout.dialog_create_tag,null);
                 dialogBuilder.setView(dialogeView);
                 //TODO 设计adapter
                 final EditText editText=(EditText) dialogeView.findViewById(R.id.dialog_CreateByTagName);
@@ -301,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(MainActivity.this);
         dialogBuilder.setTitle("选择图片的标签");
         LayoutInflater layoutInflater=getLayoutInflater();
-        View dialogeView=layoutInflater.inflate(R.layout.dialoge_camera,null);
+        View dialogeView=layoutInflater.inflate(R.layout.dialog_camera,null);
         dialogBuilder.setView(dialogeView);
         //TODO 设计adapter
         ImageView dialog_image=(ImageView) dialogeView.findViewById(R.id.dialog_imageView);
@@ -330,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(MainActivity.this);
         dialogBuilder.setTitle("选择图片的标签");
         LayoutInflater layoutInflater=getLayoutInflater();
-        View dialogeView=layoutInflater.inflate(R.layout.dialoge_camera,null);
+        View dialogeView=layoutInflater.inflate(R.layout.dialog_camera,null);
         dialogBuilder.setView(dialogeView);
         //TODO 设计adapter
         ImageView dialog_image=(ImageView) dialogeView.findViewById(R.id.dialog_imageView);
@@ -367,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(MainActivity.this);
         dialogBuilder.setTitle("选择图片的标签");
         LayoutInflater layoutInflater=getLayoutInflater();
-        View dialogeView=layoutInflater.inflate(R.layout.dialoge_camera,null);
+        View dialogeView=layoutInflater.inflate(R.layout.dialog_camera,null);
         dialogBuilder.setView(dialogeView);
         //TODO 设计adapter
         ImageView dialog_image=(ImageView) dialogeView.findViewById(R.id.dialog_imageView);

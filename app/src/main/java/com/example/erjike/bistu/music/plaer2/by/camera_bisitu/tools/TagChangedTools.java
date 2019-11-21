@@ -38,11 +38,11 @@ public class TagChangedTools {
         editor.commit();
         Log.i("addTag", "addTag: Path():"+context.getExternalCacheDir().getPath());
         FileControl.createFile(context.getExternalCacheDir().getPath()+"/"+tag,null,null);//TODO 此处的bitmap需要修改
-        List<File> fileList = FileControl.getFile(new File(context.getExternalCacheDir().getPath()));
-        Log.i("fileList", "addTag:fileList.size :"+fileList.size());
-        for(File f:fileList){
-            Log.i("fileList", "addTag: f："+f.toString());
-        }
+//        List<File> fileList = FileControl.getFile(new File(context.getExternalCacheDir().getPath()));
+//        Log.i("fileList", "addTag:fileList.size :"+fileList.size());
+//        for(File f:fileList){
+//            Log.i("fileList", "addTag: f："+f.toString());
+//        }
     }
 
 

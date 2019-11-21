@@ -6,10 +6,20 @@ import android.media.Image;
 public class ImageModel {
     Bitmap image;
     String imageName;
+    String imagePath;
 
-    public ImageModel(Bitmap image, String imageName) {
+    public ImageModel(Bitmap image, String imageName,String imagePath) {
         this.image = image;
         this.imageName = imageName;
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Bitmap getImage() {
