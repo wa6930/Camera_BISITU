@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaMetadataRetriever;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
@@ -210,6 +211,7 @@ public class FileControl {
      * @param oldPath 原文件名
      * @param newPath 修改后文件名
      */
+
     public static void renameFile(String oldPath, String newPath) {
         File oldFile = new File(oldPath);
         File newFile = new File(newPath);
@@ -224,6 +226,29 @@ public class FileControl {
     public static Bitmap ImageToBitmap(ImageView imageView) {
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         return bitmap;
+    }
+
+    /**
+     * 获取传输文件type
+     * @param filePath 文件路径
+     * @return 文件类型
+     */
+    public static String getMimeType(String filePath) {
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        String mime = "*/*";
+        if (filePath != null) {
+            try {
+                mmr.setDataSource(filePath);
+                mime = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE);
+            } catch (IllegalStateException e) {
+                return mime;
+            } catch (IllegalArgumentException e) {
+                return mime;
+            } catch (RuntimeException e) {
+                return mime;
+            }
+        }
+        return mime;
     }
 
 

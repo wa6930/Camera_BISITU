@@ -14,6 +14,10 @@
     <string name="rename_tag_hint">在此处输入您想要更改成的标签名</string>
     <string name="delete_all_tag">删除所有标签</string>
     <string name="title_show">标签内内容显示</string>
+    <string name="delete_this_image">删除该图片</string>
+    <string name="move_to_other_tagg">移动至别的标签</string>
+    <string name="select_other_tag">请选择你要移动到的文件夹</string>
+
 
 
 

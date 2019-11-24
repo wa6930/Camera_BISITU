@@ -36,6 +36,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
     //显示标签的RecyclerView
     RecyclerView tag_reyclerView;
     TapShowAdapter adapter;
+
+    //用于显示压缩ProgressDialog
+    private boolean hashPermission;
+    private ProgressBar progressBar;
+
 
 
     @Override
@@ -207,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     //大于24，7.0
                     //TODO：获取拍照的url
-                    imageUri = FileProvider.getUriForFile(MainActivity.this, "com.erjike.cameraApp", outputImage);
+                    imageUri = FileProvider.getUriForFile(MainActivity.this, getPackageName()+".cameraApp", outputImage);
                     Log.i(TAG, "onClick: version>=24");
                 } else {
                     //小于android 7.0的方法
@@ -426,5 +432,33 @@ public class MainActivity extends AppCompatActivity {
         }
         return path;
     }
+
+    /**
+     * 弹出进度条框，并同步进度条；
+     * @param percent 更新的进度
+     * @param mLoading 进度条
+     */
+    private  void loadingShow(int percent, ProgressBar mLoading){
+        if(mLoading == null){
+            mLoading = new ProgressBar(this);
+            mLoading.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
+            mLoading.setMax(100);
+        }
+        if(percent>0){
+            mLoading.setProgress(percent);
+        }
+        if(!mLoading.isShown()){
+           mLoading.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    private void loadingHide(ProgressBar mLoading){
+        if(mLoading!=null&&mLoading.isShown()){
+            mLoading.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
 
 }
